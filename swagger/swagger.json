@@ -2,8 +2,8 @@
     "swagger": "2.0",
     "info": 
     {
-      "title": "Praca Dyplomowa API",
-      "description": "Moja api do pracy dyplomowej o FFXIV",
+      "title": "Lodziarnia API",
+      "description": "Api do Lodziarni",
       "version": "1.0.0",
       "contact": 
       {
@@ -11,21 +11,69 @@
       }
     },
     "paths":{
-        "/":{
+        "/health/ping":{
            "get":{
-               "description":"Send OK",
-               "tags":["Test"],
+               "description":"Check Helath",
+               "tags":["Health"],
                "responses":
                {
                  "200":{
                    "description": "Success"
                  },
                  "404":{
-                 "description": "not found"
+                    "description": "not found"
                  }
                }
            } 
+        },
+        "/user":{
+          "get":{
+            "description": "Get user by part",
+            "tags": ["User"],
+            "responses":
+            {
+              "200":{
+                "description": "Success"
+              },
+              "404":{
+              "description": "not found"
+              }
+            }
+          },
+          "post":{
+            "description":"Change password",
+            "tags":["User"],
+            "parameters":[{
+                  "in":"body",
+                  "name":"body",
+                  "description":"UserBody",
+                  "required":true,
+                  "schema":{
+                    "$ref":"#/definitions/User"
+                  }
+                }
+              ],
+            "responses":
+            {
+              "200":{
+                "description": "Success"
+              },
+              "404":{
+              "description": "not found"
+              }
+            }
+          }
         }
+    },
+    "definitions":{
+      "User":{
+        "type":"object",
+        "properties":{
+          "name":{
+            "type":"string"
+          }
+        }
+      }
     },
     "externalDocs": {
       "description": "Find out more about Swagger",
