@@ -10,7 +10,7 @@
           "name":"Sebastian Ćwirko nr albumu: 39564"
       }
     },
-    "paths":{
+    "paths":{  
         "/health/ping":{
            "get":{
                "description":"Check Helath",
@@ -26,20 +26,7 @@
                }
            } 
         },
-        "/user":{
-          "get":{
-            "description": "Get user by part",
-            "tags": ["User"],
-            "responses":
-            {
-              "200":{
-                "description": "Success"
-              },
-              "404":{
-              "description": "not found"
-              }
-            }
-          },
+        "/user/register":{
           "post":{
             "description":"Change password",
             "tags":["User"],
@@ -49,7 +36,7 @@
                   "description":"UserBody",
                   "required":true,
                   "schema":{
-                    "$ref":"#/definitions/User"
+                    "$ref":"#/definitions/UserRegister"
                   }
                 }
               ],
@@ -63,14 +50,80 @@
               }
             }
           }
+        },
+        "/user":{
+          "get":{
+            "description": "Get user by part",
+            "tags": ["User"],
+            "responses":
+            {
+              "200":{
+                "description": "Success"
+              },
+              "404":{
+              "description": "not found"
+              }
+            }
+          }
+        },
+        "/user/login":{
+          "post":{
+            "description":"User Authentication",
+            "tags":["User"],
+            "parameters":[{
+                "in":"body",
+                "name":"body",
+                "description":"UserBody",
+                "required":true,
+                "schema":{
+                  "$ref":"#/definitions/User"
+                }
+              }
+            ],
+            "responses":
+              {
+                "200":{
+                  "description": "Success"
+                },
+                "404":{
+                  "description": "not found"
+                }
+              }
+          } 
         }
     },
     "definitions":{
+      "UserRegister":{
+        "type":"object",
+        "properties":{
+          "fullname":{
+            "type":"string",
+            "require":true
+          },
+          "name":{
+            "type":"string",
+            "require":true
+          },
+          "email":{
+            "type":"string",
+            "require":true
+          },
+          "password":{
+            "type":"string",
+            "require":true
+          }
+        }
+      },
       "User":{
         "type":"object",
         "properties":{
-          "name":{
-            "type":"string"
+          "email":{
+            "type":"string",
+            "require":true
+          },
+          "password":{
+            "type":"string",
+            "require":true
           }
         }
       }

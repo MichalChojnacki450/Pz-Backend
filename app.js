@@ -6,13 +6,14 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger/swagger.json');
 const dotenv = require('dotenv');
 const mongDB = require('./DB/mongoose')
-dotenv.config()
-
 const healthRoutes = require('./Routes/HealthRoutes')
-const UserRoutes = require('./Routes/UserRouter')
+const UserRoutes = require('./Routes/UserRouter');
+const passport = require('passport');
 
+app.use(passport.initialize());
+require('./config/passport')
 
-
+dotenv.config({path:'.env'})
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
