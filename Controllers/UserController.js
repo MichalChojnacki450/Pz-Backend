@@ -1,7 +1,7 @@
 const User = require("../Models/User")
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const TOKEN_KEY = "m4m5j4nkjna5jwna2akvkla42jiaolike98"
+const env = require('../env.json')
 
 
 const login = async (req,res) => {
@@ -20,7 +20,7 @@ const login = async (req,res) => {
           // Create token
           const token = jwt.sign(
             { user_id: user._id, email },
-            process.env.JWT_TOKEN,
+            env.TOKEN_KEY,
             {
               expiresIn: "2h",
             }
@@ -73,7 +73,7 @@ const register = async (req,res) => {
         // Create token
         const token = jwt.sign(
           { user_id: user._id, email },
-          TOKEN_KEY,
+          env.TOKEN_KEY,
           {
             expiresIn: "2h",
           }
@@ -90,4 +90,11 @@ const register = async (req,res) => {
       }
 }
 
-module.exports = {login,register}
+const profile = (req,res) => {
+  console.log(req.user)
+  User.find({email:req.user.email}).select({first_name:1,last_name:1,email:1}).exec((err,userInfo)=>{
+    res.send(userInfo)
+  })
+}
+
+module.exports = {login,register,profile}

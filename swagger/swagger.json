@@ -10,6 +10,14 @@
           "name":"Sebastian Ćwirko nr albumu: 39564"
       }
     },
+    "securityDefinitions": {
+      "Bearer": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "Enter your bearer token in the format **Bearer &lt;token>**"
+      }
+    },
     "paths":{  
         "/health/ping":{
            "get":{
@@ -51,10 +59,11 @@
             }
           }
         },
-        "/user":{
+        "/user/profile":{
           "get":{
             "description": "Get user by part",
             "tags": ["User"],
+            "security": [{ "Bearer": [] }],
             "responses":
             {
               "200":{
@@ -125,6 +134,22 @@
             "type":"string",
             "require":true
           }
+        }
+      },
+      "Token":{
+        "type":"object",
+        "properties":{
+          "token":{
+            "type":"string",
+            "require":true
+          }
+        }
+      }
+    },
+    "components":{
+      "responses":{
+        "UnauthorizedError":{
+          "description": "Access token is missing or invalid"
         }
       }
     },
