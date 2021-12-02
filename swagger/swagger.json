@@ -15,7 +15,7 @@
         "type": "apiKey",
         "name": "Authorization",
         "in": "header",
-        "description": "Enter your bearer token in the format **Bearer &lt;token>**"
+        "description": "Enter your bearer token in the format **&lt;token>**"
       }
     },
     "paths":{  
@@ -99,17 +99,39 @@
                 }
               }
           } 
+        },
+        "/lodziarnia/register":{
+          "post":{
+            "description":"Change password",
+            "tags":["Lodziarnia"],
+            "security": [{ "Bearer": [] }],
+            "parameters":[{
+                  "in":"body",
+                  "name":"body",
+                  "description":"UserBody",
+                  "required":true,
+                  "schema":{
+                    "$ref":"#/definitions/Lodziarnia"
+                  }
+                }
+              ],
+            "responses":
+            {
+              "200":{
+                "description": "Success"
+              },
+              "404":{
+              "description": "not found"
+              }
+            }
+          }
         }
     },
     "definitions":{
       "UserRegister":{
         "type":"object",
         "properties":{
-          "first_name":{
-            "type":"string",
-            "require":true
-          },
-          "last_name":{
+          "name":{
             "type":"string",
             "require":true
           },
@@ -136,10 +158,14 @@
           }
         }
       },
-      "Token":{
+      "Lodziarnia":{
         "type":"object",
         "properties":{
-          "token":{
+          "city":{
+            "type":"string",
+            "require":true
+          },
+          "address":{
             "type":"string",
             "require":true
           }

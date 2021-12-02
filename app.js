@@ -8,6 +8,7 @@ const dotenv = require('dotenv');
 const mongDB = require('./config/database')
 const healthRoutes = require('./Routes/HealthRoutes')
 const userRoutes = require('./Routes/UserRouter')
+const lodziarniaRoutes = require('./Routes/LodziarniaRoutes')
 dotenv.config({path:'.env'})
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -17,6 +18,8 @@ app.use(cors())
 
 app.use('/user',userRoutes)
 app.use('/health',healthRoutes)
+
+app.use('/lodziarnia',lodziarniaRoutes)
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port} and swagger: http://localhost:${port}/api-docs`)

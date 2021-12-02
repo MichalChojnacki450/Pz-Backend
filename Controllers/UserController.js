@@ -44,10 +44,10 @@ const login = async (req,res) => {
 const register = async (req,res) => {
     try {
         // Get user input
-        const { first_name, last_name, email, password } = req.body;
+        const { name, email, password } = req.body;
     
         // Validate user input
-        if (!(email && password && first_name && last_name)) {
+        if (!(email && password && name)) {
           res.status(400).send("All input is required");
         }
     
@@ -64,15 +64,14 @@ const register = async (req,res) => {
     
         // Create user in our database
         const user = await User({
-          first_name:first_name,
-          last_name:last_name,
+          name:name,
           email: email.toLowerCase(), // sanitize: convert email to lowercase
           password: encryptedPassword,
         });
     
         // Create token
         const token = jwt.sign(
-          { user_id: user._id, email },
+          { user_id: user._id, email,name },
           env.TOKEN_KEY,
           {
             expiresIn: "2h",
@@ -92,7 +91,7 @@ const register = async (req,res) => {
 
 const profile = (req,res) => {
   console.log(req.user)
-  User.find({email:req.user.email}).select({first_name:1,last_name:1,email:1}).exec((err,userInfo)=>{
+  User.find({email:req.user.email}).select({name:1,email:1}).exec((err,userInfo)=>{
     res.send(userInfo)
   })
 }
