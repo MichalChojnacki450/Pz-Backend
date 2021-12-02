@@ -1,75 +1,93 @@
-const User = require('../Models/User')
-const jwt = require('jsonwebtoken')
+const User = require("../Models/User")
 const bcrypt = require('bcrypt')
-const passport = require('passport')
+const jwt = require('jsonwebtoken')
+const TOKEN_KEY = "m4m5j4nkjna5jwna2akvkla42jiaolike98"
 
-const getAll = (req,res) => {
 
-    try{
-        User.find({}).select({_id:1,fullname: 1,name: 1,salt:1,hash:1,email: 1,createdAt: 1,updatedAt: 1}).exec((err,userInfo)=>{
-            if (err) {return console.log(err);}
-            res.send(userInfo)
-        })
-    }catch(err){
-        res.status(400).send(err);
-    }
+const login = async (req,res) => {
+    try {
+        // Get user input
+        const { email, password } = req.body;
     
-
-}
-
- const addUser = async (req,res) => {
-    
-    const {fullname, name,email, password} = req.body;
-    
-    const Users = new User(
-        {
-            fullname: req.body.fullname, 
-            name : req.body.name,
-            email:req.body.fullname
-        });
-  
-          User.register(Users, password, function(err, user) {
-            if (err) {
-              res.json({success:false, message:"Your account could not be saved. Error: ", err})
-            }else{
-              res.json({success: true, message: "Your account has been saved"})
-            }
-          });
-}
-
-const Login = (req,res) =>{
-
-    if(!req.body.email){
-        res.json({success: false, message: "Email was not given"})
-      } else {
-        if(!req.body.password){
-          res.json({success: false, message: "Password was not given"})
-        }else{
-          passport.authenticate('local', function (err, user, info) { 
-             if(err){
-               res.json({success: false, message: err})
-             } else{
-              if (! user) {
-                res.json({success: false, message: 'username or password incorrect'})
-              } else{
-                req.login(user, function(err){
-                  if(err){
-                    res.json({success: false, message: err})
-                  }else{
-                    const token =  jwt.sign({userId : user._id, 
-                        email:user.email}, secretkey, 
-                          {expiresIn: '24h'})
-                    res.json({success:true, message:"Authentication successful", token: token });
-                  }
-                })
-              }
-             }
-          })(req, res);
+        // Validate user input
+        if (!(email && password)) {
+          res.status(400).send("All input is required");
         }
+        // Validate if user exist in our database
+        const user = await User.findOne({ email });
+    
+        if (user && (await bcrypt.compare(password, user.password))) {
+          // Create token
+          const token = jwt.sign(
+            { user_id: user._id, email },
+            process.env.JWT_TOKEN,
+            {
+              expiresIn: "2h",
+            }
+          );
+    
+          // save user token
+          user.token = token;
+    
+          // user
+          res.status(200).send(user);
+        }
+        else
+        {
+          res.status(404).send("Invalid Credentials");
+        }
+      } catch (err) {
+        console.log(err);
       }
-    
-
-    
 }
 
-module.exports = {getAll,addUser,Login}
+const register = async (req,res) => {
+    try {
+        // Get user input
+        const { first_name, last_name, email, password } = req.body;
+    
+        // Validate user input
+        if (!(email && password && first_name && last_name)) {
+          res.status(400).send("All input is required");
+        }
+    
+        // check if user already exist
+        // Validate if user exist in our database
+        const oldUser = await User.findOne({ email });
+    
+        if (oldUser) {
+          return res.status(409).send("User Already Exist. Please Login");
+        }
+    
+        //Encrypt user password
+        encryptedPassword = await bcrypt.hash(password, 10);
+    
+        // Create user in our database
+        const user = await User({
+          first_name:first_name,
+          last_name:last_name,
+          email: email.toLowerCase(), // sanitize: convert email to lowercase
+          password: encryptedPassword,
+        });
+    
+        // Create token
+        const token = jwt.sign(
+          { user_id: user._id, email },
+          TOKEN_KEY,
+          {
+            expiresIn: "2h",
+          }
+        );
+        // save user token
+        user.token = token;
+
+        user.save();
+    
+        // return new user
+        res.status(201).send(user);
+      } catch (err) {
+        console.log(err);
+      }
+}
+
+module.exports = {login,register}

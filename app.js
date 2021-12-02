@@ -5,14 +5,9 @@ const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger/swagger.json');
 const dotenv = require('dotenv');
-const mongDB = require('./DB/mongoose')
+const mongDB = require('./config/database')
 const healthRoutes = require('./Routes/HealthRoutes')
-const UserRoutes = require('./Routes/UserRouter');
-const passport = require('passport');
-
-app.use(passport.initialize());
-require('./config/passport')
-
+const userRoutes = require('./Routes/UserRouter')
 dotenv.config({path:'.env'})
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -20,8 +15,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(express.json())
 app.use(cors())
 
+app.use('/user',userRoutes)
 app.use('/health',healthRoutes)
-app.use('/user',UserRoutes)
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port} and swagger: http://localhost:${port}/api-docs`)
