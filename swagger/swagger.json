@@ -125,6 +125,32 @@
               }
             }
           }
+        },
+        "/lodziarnia/taste/add":{
+          "post":{
+            "description":"Nowy Smak",
+            "tags":["Lodziarnia"],
+            "security": [{ "Bearer": [] }],
+            "parameters":[{
+                  "in":"body",
+                  "name":"body",
+                  "description":"Smak",
+                  "required":true,
+                  "schema":{
+                    "$ref":"#/definitions/Smaki"
+                  }
+                }
+              ],
+            "responses":
+            {
+              "200":{
+                "description": "Success"
+              },
+              "404":{
+              "description": "not found"
+              }
+            }
+          }
         }
     },
     "definitions":{
@@ -167,6 +193,27 @@
           },
           "address":{
             "type":"string",
+            "require":true
+          },
+          "lat":{
+            "type":"integer",
+            "require":true
+          },
+          "lon":{
+            "type":"integer",
+            "require":true
+          }
+        }
+      },
+      "Smaki":{
+        "type":"object",
+        "properties":{
+          "nazwaSmaku":{
+            "type":"string",
+            "require":true
+          },
+          "dostepnosc":{
+            "type":"boolean",
             "require":true
           }
         }

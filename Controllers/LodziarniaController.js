@@ -1,8 +1,8 @@
 const Lodziarnia = require('../Models/Lodziarnia')
+const smaki = require('../Models/Smaki')
+const User = require('../Models/User')
 
 const register = async (req,res) => {
-    console.log(req.body)
-    console.log(req.user)
     try{
 
         const existed = await Lodziarnia.findOne({adress:req.body.address})
@@ -12,10 +12,18 @@ const register = async (req,res) => {
             return res.status(404).send({err:"Lodziarnia istnieje"})
         }
         else{
+            
+            // User.findOne({email:req.user.email}).exec((err,userInfo)=>{
+            //     const user = userInfo;
+            //     console.log(user)
+            // })
+            
             const lodziarniaToSave = await Lodziarnia({
                 name:req.user.name,
                 city:req.body.city,
-                adress:req.body.address
+                adress:req.body.address,
+                lat:req.body.lat,
+                lon:req.body.lon
             })
         
             lodziarniaToSave.save();
@@ -24,11 +32,27 @@ const register = async (req,res) => {
     }
     catch(err){
         console.log(err)
-    }
-
-    
-    
-    
+    }    
 }
 
-module.exports = {register}
+const addTaste = async (req,res) =>{
+    console.log(req.user.name)
+    try{
+        const smakiToSave = await smaki({
+            lodziarnia:req.user.name,
+            nazwaSmaku:req.body.nazwaSmaku,
+            dostepnosc: req.body.dostepnosc            
+        })
+
+        console.log(smakiToSave)
+    
+        smakiToSave.save();
+        res.status(201).send(smakiToSave)
+        
+    }
+    catch(err){
+        console.log(err)
+    }  
+}
+
+module.exports = {register,addTaste}

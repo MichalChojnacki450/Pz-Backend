@@ -19,7 +19,7 @@ const login = async (req,res) => {
         if (user && (await bcrypt.compare(password, user.password))) {
           // Create token
           const token = jwt.sign(
-            { user_id: user._id, email },
+            { user_id: user._id, email: email,name: user.name },
             env.TOKEN_KEY,
             {
               expiresIn: "2h",
@@ -71,7 +71,7 @@ const register = async (req,res) => {
     
         // Create token
         const token = jwt.sign(
-          { user_id: user._id, email,name },
+          { user_id: user._id, email: email,name: name },
           env.TOKEN_KEY,
           {
             expiresIn: "2h",
@@ -90,7 +90,6 @@ const register = async (req,res) => {
 }
 
 const profile = (req,res) => {
-  console.log(req.user)
   User.find({email:req.user.email}).select({name:1,email:1}).exec((err,userInfo)=>{
     res.send(userInfo)
   })
