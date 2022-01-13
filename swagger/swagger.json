@@ -151,6 +151,32 @@
               }
             }
           }
+        },
+        "/lodziarnia/taste":{
+          "Get":{
+            "description":"Nowy Smak",
+            "tags":["Lodziarnia"],
+            "security": [{ "Bearer": [] }],
+            "parameters":[{
+                  "in":"query",
+                  "name":"miasto",
+                  "description":"miasto",
+                  "required":true,
+                  "schema":{
+                    "$ref":"#/definitions/Smaki"
+                  }
+                }
+              ],
+            "responses":
+            {
+              "200":{
+                "description": "Success"
+              },
+              "404":{
+              "description": "not found"
+              }
+            }
+          }
         }
     },
     "definitions":{

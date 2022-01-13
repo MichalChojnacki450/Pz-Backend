@@ -1,5 +1,5 @@
 const Lodziarnia = require('../Models/Lodziarnia')
-const smaki = require('../Models/Smaki')
+const Smaki = require('../Models/Smaki')
 const User = require('../Models/User')
 
 const register = async (req,res) => {
@@ -38,7 +38,7 @@ const register = async (req,res) => {
 const addTaste = async (req,res) =>{
     console.log(req.user.name)
     try{
-        const smakiToSave = await smaki({
+        const smakiToSave = await Smaki({
             lodziarnia:req.user.name,
             nazwaSmaku:req.body.nazwaSmaku,
             dostepnosc: req.body.dostepnosc            
@@ -48,6 +48,19 @@ const addTaste = async (req,res) =>{
     
         smakiToSave.save();
         res.status(201).send(smakiToSave)
+        
+    }
+    catch(err){
+        console.log(err)
+    }  
+}
+const getTaste = async (req,res) =>{
+    
+    try{
+        Smaki.find({email:req.query.miasto}).select({name:1,email:1}).exec((err,smakiToSave)=>{
+            res.status(201).send(smakiToSave)
+          })
+        
         
     }
     catch(err){
