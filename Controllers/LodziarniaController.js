@@ -68,4 +68,4 @@ const getTaste = async (req,res) =>{
     }  
 }
 
-module.exports = {register,addTaste}
+module.exports = {register,addTaste,getTaste}
