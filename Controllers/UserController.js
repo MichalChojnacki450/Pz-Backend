@@ -37,7 +37,8 @@ const login = async (req,res) => {
           res.status(404).send("Invalid Credentials");
         }
       } catch (err) {
-        console.log(err);
+        console.log(err)
+        res.send(404).send(err)
       }
 }
 
@@ -85,7 +86,8 @@ const register = async (req,res) => {
         // return new user
         res.status(201).send(user);
       } catch (err) {
-        console.log(err);
+        console.log(err)
+        res.send(404).send(err)
       }
 }
 
