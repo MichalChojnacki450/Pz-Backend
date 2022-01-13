@@ -57,7 +57,7 @@ const addTaste = async (req,res) =>{
 const getTaste = async (req,res) =>{
     
     try{
-        Smaki.find({email:req.query.miasto}).select({name:1,email:1}).exec((err,smakiToSave)=>{
+        Smaki.find({email:req.query.miasto}).select().exec((err,smakiToSave)=>{
             res.status(201).send(smakiToSave)
           })
         
