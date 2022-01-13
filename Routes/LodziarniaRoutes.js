@@ -5,6 +5,6 @@ const LodziarniaController = require('../Controllers/LodziarniaController')
 
 router.post('/register',auth,LodziarniaController.register)
 router.post('/taste/add',auth,LodziarniaController.addTaste)
-router.get('/taste',auth,LodziarniaController.addTaste)
+router.get('/taste',LodziarniaController.getTaste)
 
 module.exports = router
