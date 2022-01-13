@@ -32,6 +32,8 @@ const register = async (req,res) => {
     }
     catch(err){
         console.log(err)
+        res.send(404).send(err)
+        
     }    
 }
 
@@ -52,6 +54,8 @@ const addTaste = async (req,res) =>{
     }
     catch(err){
         console.log(err)
+        res.send(404).send(err)
+        
     }  
 }
 const getTaste = async (req,res) =>{
@@ -65,6 +69,7 @@ const getTaste = async (req,res) =>{
     }
     catch(err){
         console.log(err)
+        res.send(404).send(err)
     }  
 }
 
