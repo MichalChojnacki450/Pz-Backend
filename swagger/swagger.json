@@ -65,12 +65,15 @@
             "tags":["User"],
             "security": [{ "Bearer": [] }],
             "parameters":[{
-                  "name":"name",
-                  "in":"query",
-                  "desciption":"Name Restaurant",
-                  "required":true
-                }
-              ],
+              "in":"body",
+              "name":"body",
+              "description":"Favo",
+              "required":true,
+              "schema":{
+                "$ref":"#/definitions/Favo"
+              }
+            }
+          ],
             "responses":
             {
               "200":{
@@ -85,6 +88,22 @@
         "/user/profile":{
           "get":{
             "description": "Get user by part",
+            "tags": ["User"],
+            "security": [{ "Bearer": [] }],
+            "responses":
+            {
+              "200":{
+                "description": "Success"
+              },
+              "404":{
+              "description": "not found"
+              }
+            }
+          }
+        },
+        "/user/favourite":{
+          "get":{
+            "description": "favourite",
             "tags": ["User"],
             "security": [{ "Bearer": [] }],
             "responses":
@@ -303,6 +322,19 @@
           },
           "dostepnosc":{
             "type":"boolean",
+            "require":true
+          }
+        }
+      },
+      "Favo":{
+        "type":"object",
+        "properties":{
+          "nazwa":{
+            "type":"string",
+            "require":true
+          },
+          "adress":{
+            "type":"string",
             "require":true
           }
         }

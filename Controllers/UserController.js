@@ -100,7 +100,7 @@ const profile = (req,res) => {
 const addFavourite = (req,res)=>{
   try
   {
-    const name = req.query.name
+    const name = req.body
 
     User.findOneAndUpdate({email:req.user.email},
       {
@@ -119,4 +119,10 @@ const addFavourite = (req,res)=>{
   
 }
 
-module.exports = {login,register,profile,addFavourite}
+const getFavourite = (req,res) => {
+  User.findOne({email:req.user.email}).select({favourite:1}).exec((err,userInfo)=>{
+    res.send(userInfo)
+  })
+}
+
+module.exports = {login,register,profile,addFavourite,getFavourite}
