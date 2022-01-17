@@ -43,7 +43,7 @@ const addTaste = async (req,res) =>{
         const smakiToSave = await Smaki({
             lodziarnia:req.user.name,
             nazwaSmaku:req.body.nazwaSmaku,
-            adress:req.body.adress,
+            adress:req.query.address,
             dostepnosc: req.body.dostepnosc            
         })
 
@@ -67,6 +67,18 @@ const getTaste = async (req,res) =>{
           })
         
         
+    }
+    catch(err){
+        console.log(err)
+        res.send(404).send(err)
+    }  
+}
+const editTaste = async (req,res) => {  
+    try{
+        console.log(req.body)
+        Smaki.findOneAndUpdate({adress:req.query.address,nazwaSmaku:req.body.taste},{nazwaSmaku:req.body.newTaste,dostepnosc:req.body.dostepnosc}).exec((err,smak)=>{
+            res.status(201).send(smak)
+          })
     }
     catch(err){
         console.log(err)
@@ -105,4 +117,4 @@ const getByAdress = async(req,res) => {
 
 }
 
-module.exports = {register,addTaste,getTaste,getAll,getByAdress}
+module.exports = {register,addTaste,getTaste,getAll,getByAdress,editTaste}

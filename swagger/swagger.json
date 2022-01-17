@@ -210,13 +210,51 @@
             "description":"Nowy Smak",
             "tags":["Lodziarnia"],
             "security": [{ "Bearer": [] }],
-            "parameters":[{
+            "parameters":[
+              {
+                "name":"address",
+                "in":"query",
+                "desciption":"address",
+                "required":true
+              },{
                   "in":"body",
                   "name":"body",
                   "description":"Smak",
                   "required":true,
                   "schema":{
                     "$ref":"#/definitions/Smaki"
+                  }
+                }
+              ],
+            "responses":
+            {
+              "200":{
+                "description": "Success"
+              },
+              "404":{
+              "description": "not found"
+              }
+            }
+          }
+        },
+        "/lodziarnia/taste/edit":{
+          "post":{
+            "description":"Edit Smak",
+            "tags":["Lodziarnia"],
+            "security": [{ "Bearer": [] }],
+            "parameters":[
+              {
+                "name":"address",
+                "in":"query",
+                "desciption":"address",
+                "required":true
+              },{
+                  "in":"body",
+                  "name":"body",
+                  "description":"Smak",
+                  "required":true,
+                  "schema":{
+                    "$ref":"#/definitions/EditTaste"
                   }
                 }
               ],
@@ -316,10 +354,6 @@
             "type":"string",
             "require":true
           },
-          "adress":{
-            "type":"string",
-            "require":true
-          },
           "dostepnosc":{
             "type":"boolean",
             "require":true
@@ -335,6 +369,23 @@
           },
           "adress":{
             "type":"string",
+            "require":true
+          }
+        }
+      },
+      "EditTaste":{
+        "type":"object",
+        "properties":{
+          "taste":{
+            "type":"string",
+            "require":true
+          },
+          "newTaste":{
+            "type":"string",
+            "require":true
+          },
+          "dostepnosc":{
+            "type":"boolean",
             "require":true
           }
         }
