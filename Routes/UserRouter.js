@@ -7,5 +7,6 @@ router.post('/login',UserController.login)
 router.post('/register',UserController.register)
 
 router.get('/profile',auth,UserController.profile)
+router.post('/addFavourite',auth,UserController.addFavourite)
 
 module.exports = router

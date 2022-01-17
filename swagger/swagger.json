@@ -59,6 +59,29 @@
             }
           }
         },
+        "/user/addFavourite":{
+          "post":{
+            "description":"Add restaurant to favourite",
+            "tags":["User"],
+            "security": [{ "Bearer": [] }],
+            "parameters":[{
+                  "name":"name",
+                  "in":"query",
+                  "desciption":"Name Restaurant",
+                  "required":true
+                }
+              ],
+            "responses":
+            {
+              "200":{
+                "description": "Success"
+              },
+              "404":{
+              "description": "not found"
+              }
+            }
+          }
+        },
         "/user/profile":{
           "get":{
             "description": "Get user by part",

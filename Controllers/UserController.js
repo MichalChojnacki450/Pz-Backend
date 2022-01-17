@@ -92,9 +92,31 @@ const register = async (req,res) => {
 }
 
 const profile = (req,res) => {
-  User.find({email:req.user.email}).select({name:1,email:1}).exec((err,userInfo)=>{
+  User.find({email:req.user.email}).select({name:1,email:1,favourite:1}).exec((err,userInfo)=>{
     res.send(userInfo)
   })
 }
 
-module.exports = {login,register,profile}
+const addFavourite = (req,res)=>{
+  try
+  {
+    const name = req.query.name
+
+    User.findOneAndUpdate({email:req.user.email},
+      {
+        "$push": {
+          favourite: name
+        }
+      }
+      ).then(userInfo=>{
+      res.status(200).send(userInfo)
+    })
+  }
+  catch(err)
+  {
+    res.status(404).send(err)
+  }
+  
+}
+
+module.exports = {login,register,profile,addFavourite}
