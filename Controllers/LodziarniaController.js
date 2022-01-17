@@ -38,11 +38,12 @@ const register = async (req,res) => {
 }
 
 const addTaste = async (req,res) =>{
-    console.log(req.user.name)
+    console.log(req.body)
     try{
         const smakiToSave = await Smaki({
             lodziarnia:req.user.name,
             nazwaSmaku:req.body.nazwaSmaku,
+            adress:req.body.adress,
             dostepnosc: req.body.dostepnosc            
         })
 
@@ -61,7 +62,7 @@ const addTaste = async (req,res) =>{
 const getTaste = async (req,res) =>{
     
     try{
-        Smaki.find({email:req.query.miasto}).select().exec((err,smakiToSave)=>{
+        Smaki.find({email:req.query.adress}).select().exec((err,smakiToSave)=>{
             res.status(201).send(smakiToSave)
           })
         
@@ -72,5 +73,36 @@ const getTaste = async (req,res) =>{
         res.send(404).send(err)
     }  
 }
+const getAll = async(req,res) => {
 
-module.exports = {register,addTaste,getTaste}
+    try{
+        Lodziarnia.find().exec((err,lodziarnie)=>{
+            res.status(201).send(lodziarnie)
+          })
+        
+        
+    }
+    catch(err){
+        console.log(err)
+        res.send(404).send(err)
+    }  
+
+}
+
+const getByAdress = async(req,res) => {
+
+    try{
+        Lodziarnia.findOne({adress:req.query.address}).exec((err,lodziarnie)=>{
+            res.status(201).send(lodziarnie)
+          })
+        
+        
+    }
+    catch(err){
+        console.log(err)
+        res.send(404).send(err)
+    }  
+
+}
+
+module.exports = {register,addTaste,getTaste,getAll,getByAdress}

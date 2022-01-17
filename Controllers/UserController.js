@@ -92,7 +92,7 @@ const register = async (req,res) => {
 }
 
 const profile = (req,res) => {
-  User.find({email:req.user.email}).select({name:1,email:1,favourite:1}).exec((err,userInfo)=>{
+  User.findOne({email:req.user.email}).select({name:1,email:1,favourite:1}).exec((err,userInfo)=>{
     res.send(userInfo)
   })
 }

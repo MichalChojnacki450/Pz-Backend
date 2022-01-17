@@ -149,6 +149,43 @@
             }
           }
         },
+        "/lodziarnia/all":{
+          "get":{
+            "description":"Get all",
+            "tags":["Lodziarnia"],
+            "responses":
+            {
+              "200":{
+                "description": "Success"
+              },
+              "404":{
+              "description": "not found"
+              }
+            }
+          }
+        },
+        "/lodziarnia":{
+          "get":{
+            "description":"Get by adress",
+            "tags":["Lodziarnia"],
+            "parameters":[{
+              "name":"address",
+              "in":"query",
+              "desciption":"address",
+              "required":true
+            }
+          ],
+            "responses":
+            {
+              "200":{
+                "description": "Success"
+              },
+              "404":{
+              "description": "not found"
+              }
+            }
+          }
+        },
         "/lodziarnia/taste/add":{
           "post":{
             "description":"Nowy Smak",
@@ -179,7 +216,6 @@
           "get":{
             "description":"Nowy Smak",
             "tags":["Lodziarnia"],
-            "security": [{ "Bearer": [] }],
             "parameters":[{
                   "in":"query",
                   "name":"miasto",
@@ -258,6 +294,10 @@
         "type":"object",
         "properties":{
           "nazwaSmaku":{
+            "type":"string",
+            "require":true
+          },
+          "adress":{
             "type":"string",
             "require":true
           },
