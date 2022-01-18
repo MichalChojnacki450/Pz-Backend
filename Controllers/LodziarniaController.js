@@ -12,12 +12,7 @@ const register = async (req,res) => {
             return res.status(404).send({err:"Lodziarnia istnieje"})
         }
         else{
-            
-            // User.findOne({email:req.user.email}).exec((err,userInfo)=>{
-            //     const user = userInfo;
-            //     console.log(user)
-            // })
-            
+                        
             const lodziarniaToSave = await Lodziarnia({
                 name:req.user.name,
                 city:req.body.city,
@@ -31,24 +26,19 @@ const register = async (req,res) => {
         }
     }
     catch(err){
-        console.log(err)
         res.send(404).send(err)
         
     }    
 }
 
 const addTaste = async (req,res) =>{
-    console.log(req.body)
     try{
         const smakiToSave = await Smaki({
             lodziarnia:req.user.name,
             nazwaSmaku:req.body.nazwaSmaku,
             adress:req.query.address,
             dostepnosc: req.body.dostepnosc            
-        })
-
-        console.log(smakiToSave)
-    
+        })    
         smakiToSave.save();
         res.status(201).send(smakiToSave)
         
@@ -75,7 +65,6 @@ const getTaste = async (req,res) =>{
 }
 const editTaste = async (req,res) => {  
     try{
-        console.log(req.body)
         Smaki.findOneAndUpdate({adress:req.query.address,nazwaSmaku:req.body.taste},{nazwaSmaku:req.body.newTaste,dostepnosc:req.body.dostepnosc}).exec((err,smak)=>{
             res.status(201).send(smak)
           })
